@@ -1,3 +1,4 @@
+const promoted_list = ["pawn", "lance", "knight", "silver", "bishop", "rook"];
 class Piece extends Phaser.GameObjects.Image {
 	constructor(scene, x, y, texture, isEnemy = false) {
 		super(scene, x, y, texture, 0);
@@ -13,11 +14,19 @@ class Piece extends Phaser.GameObjects.Image {
 		this.isHand = false;
 		this.isEnemy = isEnemy;
 		this.isMoved = false;
+		this.canPremoted = false;
 
 		if (!this.isEnemy) {
 			this.setInteractive().on("pointerdown", (pointer, localX, localY, event) => {
 				this.touchThisObject(pointer, localX, localY, event);
 			});
+		}
+
+		for (const i of promoted_list) {
+			if (this.name === i) {
+				this.canPremoted = true;
+				break;
+			}
 		}
 
 		this.shadowObject = this.scene.add.image(x + 4, y + 4, texture);
@@ -109,22 +118,29 @@ class Piece extends Phaser.GameObjects.Image {
 		se.shogi.play();
 		if (y <= 0) {
 			// TODO:版の移動
+			if (this.name === "king") {
+				
+			}
 		}
-		if (y <= 3) {
+		if (y < 3 && this.canPremoted) {
 			// TODO:成りの追加
 			let wx = x * 64 + 64;
 			let wy = y * 64 + 256;
-			this.showPromotedWindow(x, y);
-			switch (gameData.piecesBoard[y][x].name) {
-				case "pawn":
+			let width = 160;
+			let height = 96;
+			if (x <= 4) {
+				this.showPromotedWindow(x, y, wx, wy, width, height);
+			} else {
+				this.showPromotedWindow(x, y, wx - width, wy, width, height);
 			}
+
 		}
 		gameData.turn = "enemy";
 	}
 
-	showPromotedWindow(x, y, width, height) {
+	showPromotedWindow(x, y, wx, wy, width, height) {
 		gameData.piecesBoard[y][x].window = this.scene.add.graphics();
-		gameData.piecesBoard[y][x].window.fillStyle(0x000000, 1).fillRect(x, y, width, height);
+		gameData.piecesBoard[y][x].window.fillStyle(0xffffff, 0.7).fillRect(wx, wy, width, height);
 		gameData.piecesBoard[y][x].window.depth = 7;
 	}
 
@@ -362,19 +378,15 @@ class Piece extends Phaser.GameObjects.Image {
 				while (d <= 8) {
 					if (y + d <= 8 && x + d <= 8) {
 						has_movable_point = pushMovablePoint(x, y, d, d);
-						if (has_movable_point) break;
 					}
 					if (y - d >= 0 && x - d >= 0) {
 						has_movable_point = pushMovablePoint(x, y, -d, -d);
-						if (has_movable_point) break;
 					}
 					if (y + d <= 8 && x - d >= 0) {
 						has_movable_point = pushMovablePoint(x, y, -d, d);
-						if (has_movable_point) break;
 					}
 					if (y - d >= 0 && x + d <= 8) {
 						has_movable_point = pushMovablePoint(x, y, d, -d);
-						if (has_movable_point) break;
 					}
 					d++;
 				}
@@ -384,19 +396,15 @@ class Piece extends Phaser.GameObjects.Image {
 				while (d <= 8) {
 					if (y + d <= 8) {
 						has_movable_point = pushMovablePoint(x, y, 0, d);
-						if (has_movable_point) break;
 					}
 					if (y - d >= 0) {
 						has_movable_point = pushMovablePoint(x, y, 0, -d);
-						if (has_movable_point) break;
 					}
 					if (x + d <= 8) {
 						has_movable_point = pushMovablePoint(x, y, d, 0);
-						if (has_movable_point) break;
 					}
 					if (x - d >= 0) {
 						has_movable_point = pushMovablePoint(x, y, -d, 0);
-						if (has_movable_point) break;
 					}
 					d++;
 				}
@@ -451,7 +459,7 @@ class Piece extends Phaser.GameObjects.Image {
 			targets: this,
 			x: (x + dx) * 64 + 64,
 			y: (y + dy) * 64 + 256,
-			duration: 1000,
+			duration: 500,
 			ease: "Power2",
 			onComplete: () => {
 				if (isPLayer) {
@@ -465,7 +473,7 @@ class Piece extends Phaser.GameObjects.Image {
 			targets: this.shadowObject,
 			x: (x + dx) * 64 + 64 + 4,
 			y: (y + dy) * 64 + 256 + 4,
-			duration: 1000,
+			duration: 500,
 			ease: "Power2",
 		});
 
