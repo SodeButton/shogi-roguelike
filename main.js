@@ -37,7 +37,8 @@ const config = {
 			gravity: { y: 0 },
 		},
 	},
-	scene: [LogoScene, LoadScene, StartScene, GameScene],
+	// scene: [LogoScene, LoadScene, StartScene, GameScene],
+	scene: [LoadScene, StartScene, GameScene],
 };
 
 let game = new Phaser.Game(config);

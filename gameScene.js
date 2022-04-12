@@ -9,6 +9,7 @@ class GameScene extends Phaser.Scene {
 
 		let stage = this.cache.json.get("stage_data");
 		let index = "0";
+
 		for (let y = 0; y < 9; y++) {
 			for (let x = 0; x < 9; x++) {
 				if (stage[index][y][x] != null) {
@@ -19,7 +20,6 @@ class GameScene extends Phaser.Scene {
 		gameData.piecesBoard[8][4] = new Piece(this, 4 * 64 + 64, 8 * 64 + 256, "king");
 
 		this.isFade = false;
-
 		this.fade = new Fade(this, 1);
 
 		this.bgm_game = this.sound.add("bgm_game");
@@ -84,7 +84,6 @@ class GameScene extends Phaser.Scene {
 			this.piece_particle.setPosition(pointer.x, pointer.y);
 			this.piece_particle.on = true;
 		}
-
 		if (gameData.turn === "enemy") {
 			for (let y = 0; y < 9; y++) {
 				for (let x = 0; x < 9; x++) {

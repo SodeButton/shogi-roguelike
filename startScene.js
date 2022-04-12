@@ -48,10 +48,9 @@ class StartScene extends Phaser.Scene {
 		this.bgm_title.play();
 
 		this.isClick = false;
-
+/*
 		this.input.once(
-			"pointerdown",
-			function () {
+			"pointerdown", () => {
 				this.tweens.add({
 					targets: this.bgm_title,
 					volume: 0,
@@ -63,6 +62,11 @@ class StartScene extends Phaser.Scene {
 			},
 			this
 		);
+		*/
+
+		this.testButton = new Button(this, game_width / 2, game_height / 2, "test", 32, () => {
+			console.log("hogehoge");
+		});
 	}
 
 	update(time, delta) {
