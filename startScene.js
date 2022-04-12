@@ -47,28 +47,18 @@ class StartScene extends Phaser.Scene {
 		this.bgm_title.volume = 0.3;
 		this.bgm_title.play();
 
-		this.fade = this.add.graphics();
-		this.fade.fillStyle(0x000000, 1).fillRect(0, 0, game_width, game_height);
-		this.fade.alpha = 0;
-
 		this.isClick = false;
-		this.fadeTime = 0;
 
 		this.input.once(
 			"pointerdown",
 			function () {
-				this.tweens.add({
-					targets: this.fade,
-					alpha: 1,
-					duration: 1000,
-					ease: "Power2",
-				});
 				this.tweens.add({
 					targets: this.bgm_title,
 					volume: 0,
 					duration: 1000,
 					ease: "Power2",
 				});
+				this.fade = new Fade(this, 0);
 				this.isClick = true;
 			},
 			this
@@ -81,13 +71,9 @@ class StartScene extends Phaser.Scene {
 		this.versionText.updateText();
 		this.copyrightText.updateText();
 
-		if (this.isClick) {
-			this.fadeTime += delta / 1000;
-			if (this.fadeTime >= 1.0) {
-				this.fadeTime = 0;
-				this.bgm_title.stop();
-				this.scene.start("gameScene");
-			}
+		if (this.isClick && this.fade.isComplete) {
+			this.bgm_title.stop();
+			this.scene.start("gameScene");
 		}
 	}
 }

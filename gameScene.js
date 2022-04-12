@@ -19,17 +19,8 @@ class GameScene extends Phaser.Scene {
 		gameData.piecesBoard[8][4] = new Piece(this, 4 * 64 + 64, 8 * 64 + 256, "king");
 
 		this.isFade = false;
-		this.fade = this.add.graphics();
-		this.fade.fillStyle(0x000000, 1).fillRect(0, 0, game_width, game_height);
-		this.fade.alpha = 1;
-		this.fade.depth = 10;
 
-		this.tweens.add({
-			targets: this.fade,
-			alpha: 0,
-			duration: 1000,
-			ease: "Power2",
-		});
+		this.fade = new Fade(this, 1);
 
 		this.bgm_game = this.sound.add("bgm_game");
 		this.bgm_game.volume = 0.3;
@@ -80,17 +71,11 @@ class GameScene extends Phaser.Scene {
 		});
 
 		this.isFade = false;
-		this.fadeTime = 0;
 		this.is_enemy_moved = false;
 	}
 
 	update(time, delta) {
-		if (!this.isFade) {
-			this.fadeTime += delta / 1000;
-			if (this.fadeTime >= 1.0) {
-				this.fadeTime = 0;
-				this.isFade = true;
-			}
+		if (!this.fade.isComplete) {
 			return;
 		}
 
