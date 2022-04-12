@@ -25,7 +25,9 @@ class Button extends Phaser.GameObjects.Container {
 
 		this.buttonImage = this.scene.add.graphics()
 			.fillRoundedRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height, 8)
-			.fillStyle(0x333333, 1);
+			.fillStyle(0x666666, 1)
+			.strokeRoundedRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height, 8)
+			.lineStyle(8, 0x000000, 1);
 		this.buttonImage.depth = 10;
 		this.buttonText = this.scene.add.text(this.x, this.y, this.text, {
 			fontSize: this.fontSize
