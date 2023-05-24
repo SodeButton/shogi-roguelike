@@ -12,7 +12,6 @@ dist
 dist-ssr
 *.local
 
-package.json
 yml.lock
 
 # Editor directories and files

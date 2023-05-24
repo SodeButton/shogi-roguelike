@@ -1,0 +1,21 @@
+{
+	"name": "shogi_roguelike",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"preview": "vite preview",
+		"deploy": "gh-pages -d dist",
+		"deploy-clean": "gh-pages-clean gh-pages -d dist"
+	},
+	"devDependencies": {
+		"gh-pages": "^4.0.0",
+		"typescript": "^4.7.4",
+		"vite": "^3.0.0"
+	},
+	"dependencies": {
+		"phaser": "^3.55.2"
+	}
+}
